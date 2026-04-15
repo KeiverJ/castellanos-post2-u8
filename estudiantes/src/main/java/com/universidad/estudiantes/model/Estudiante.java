@@ -2,10 +2,12 @@ package com.universidad.estudiantes.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Entidad JPA que representa un estudiante.
- * Hibernate mapea esta clase a la tabla "estudiantes" en MySQL.
+ * Lado inverso de la relación ManyToMany con Curso.
  */
 @Entity
 @Table(name = "estudiantes")
@@ -33,11 +35,13 @@ public class Estudiante {
     @Column(name = "carrera", nullable = false, length = 100)
     private String carrera;
 
-    // Constructor vacío requerido por JPA
+    // Lado inverso de la relación ManyToMany
+    @ManyToMany(mappedBy = "estudiantes")
+    private Set<Curso> cursos = new HashSet<>();
+
     public Estudiante() {
     }
 
-    // Getters y Setters
     public Long getId() {
         return id;
     }
@@ -76,5 +80,9 @@ public class Estudiante {
 
     public void setCarrera(String carrera) {
         this.carrera = carrera;
+    }
+
+    public Set<Curso> getCursos() {
+        return cursos;
     }
 }
